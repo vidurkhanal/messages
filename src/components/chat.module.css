@@ -1,5 +1,7 @@
 .chat{
     flex: 0.68;
+    display: flex;
+    flex-direction: column;
 }
 
 .header{
@@ -33,6 +35,8 @@
     min-width: 100px;
 }
 
+
+
 .headerRight button:hover .headerIcon{
     color: rebeccapurple;
 }
@@ -40,3 +44,79 @@
 .headerIcon{
     font-size: 24px;
 }
+
+.body{
+    background: url('../bg.png');
+    flex: 1;
+    background-repeat: repeat;
+    background-position: center center;
+    padding: 30px;
+    overflow: auto;
+}
+
+.message{
+    position: relative;
+    font-size: 16px;
+    padding: 10px;
+    border-radius: 10px;
+    background: white;
+    width: max-content;
+    margin-bottom: 30px;
+}
+
+.sender{
+    position: absolute;
+    top: -15px;
+    font-size: 12px;
+}
+
+.time{
+    margin-left: 10px;
+    font-size: xx-small;
+}
+
+._sender{
+    margin-left: auto;
+    background: #dcf8c6;
+}
+
+.footer{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 55px;
+    border-top: 1px solid lightgray;
+}
+.footer>form{
+    flex: 1;
+    display: flex;
+}
+
+.footer>form>input{
+    flex: 1;
+    border: none;
+    outline: none;
+    background: none;
+    padding-left: 10px;
+    font-size: 130%;
+}
+
+.footer>form{
+    padding: 5px;
+    background: white;
+    border-radius: 25px;
+}
+
+.footer>form>button{
+    border: none;
+    outline: none;
+    background: none;
+}
+
+.footerIcon{
+    margin: 3px;
+    color: gray;
+    font-size: 30px !important;
+}
+
