@@ -1,0 +1,42 @@
+.chat{
+    flex: 0.68;
+}
+
+.header{
+    padding: 20px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid lightgray;
+
+}
+
+.headerMid{
+    flex: 1;
+    padding-left: 20px;
+}
+
+.headerMid > h3{
+    color: rgb(54, 54, 54);
+    font-weight: 500;
+    margin-bottom: 3px;
+}
+
+.headerMid>p{
+    color: gray;
+    font-size: 12px;
+}
+
+.headerRight{
+    display: flex;
+    justify-content: space-between;
+    min-width: 100px;
+}
+
+.headerRight button:hover .headerIcon{
+    color: rebeccapurple;
+}
+
+.headerIcon{
+    font-size: 24px;
+}
