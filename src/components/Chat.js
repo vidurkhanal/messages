@@ -10,23 +10,36 @@ import {
 import React, { useEffect, useState } from "react";
 import styles from "./chat.module.css";
 import cx from "classnames";
+import { useParams } from "react-router-dom";
+import db from "../firebase";
 
-function Chat() {
+function Chat({ empty }) {
+
   const [message, setMessage] = useState("");
-  const [seed, setSeed] = useState("")
-  useEffect(() => {
-    setSeed(Math.floor(
-      Math.random() * 5000))
-    
-  }, [])
+  const [seed, setSeed] = useState("");
+  const [roomName ,setRoomName] = useState("")
+  const {roomID} = useParams()
+  useEffect(()=>{
+    if (roomID){
+      db.collection("chatrooms").doc(roomID).onSnapshot(snapshot => 
+        setRoomName(snapshot.data().name)
+      )
+    }
+    setSeed(Math.floor(Math.random() * 5000));
+
+  },[roomID])
+
+
+  if (empty)  {
+    return <h1>SELECT A CHAT TO CONTINUE</h1>;;
+  }
+ 
   return (
     <div className={styles.chat}>
       <div className={styles.header}>
-        <Avatar
-          src={`https://avatars.dicebear.com/api/human/${seed}.svg`}
-        />
+        <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
         <div className={styles.headerMid}>
-          <h3>Room Name</h3>
+          <h3>{roomName}</h3>
           <p>Last Seen At... </p>
         </div>
         <div className={styles.headerRight}>
@@ -54,6 +67,7 @@ function Chat() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
+            setMessage(" ");
           }}
         >
           <input

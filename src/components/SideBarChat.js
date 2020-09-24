@@ -2,12 +2,16 @@ import { Avatar } from "@material-ui/core";
 import React from "react";
 import styles from "./SidebarChat.module.css";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+import db from "../firebase";
 
-function SideBarChat({ addNewChat }) {
+function SideBarChat({ addNewChat, data }) {
   const createChat = () => {
     const RoomName = prompt("Enter A Room Name.");
     if (RoomName) {
       // ADD TO DB....
+      db.collection('chatrooms').add({
+        name:RoomName,
+      })
     }
   };
   return !addNewChat ? (
@@ -18,7 +22,7 @@ function SideBarChat({ addNewChat }) {
         )}.svg`}
       />
       <div className={styles.info}>
-        <h2>ChatGroup Name</h2>
+        <h2>{data.name}</h2>
         <p>Last Message</p>
       </div>
     </div>

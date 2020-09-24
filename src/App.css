@@ -6,11 +6,12 @@
 }
 
 .app>main{
+    z-index: 100;
     display: flex;
     background: #ededed;
-    margin-top: -50px;
-    height: 90vh;
-    width: 90vw;
+    margin-top: -18px;
+    height: 95vh;
+    width: 80vw;
     box-shadow: -1px 4px 20px -6px rgba(0,0,0,0.7);
 }
 
@@ -21,4 +22,12 @@
         margin-top: 0;
         overflow: hidden;
     }
+}
+
+.purpleBox{
+    height: 15vh;
+    width: 100vw;
+    background: rgb(77, 65, 88);
+    position: absolute;
+    top: 0;
 }
