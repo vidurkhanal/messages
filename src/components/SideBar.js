@@ -5,11 +5,13 @@ import { Chat, DonutLarge, MoreVert, SearchOutlined } from "@material-ui/icons";
 import SideBarChat from "./SideBarChat";
 import db from "../firebase";
 import { Link } from "react-router-dom";
+import { useStateValue } from "../StateProvider";
 
 function SideBar() {
+  const [{ user }, dispatch] = useStateValue();
   const [rooms, setRooms] = useState([]);
-   useEffect(() => {
-    const unsubscribe =db.collection("chatrooms").onSnapshot((snapshot) => {
+  useEffect(() => {
+    const unsubscribe = db.collection("chatrooms").onSnapshot((snapshot) => {
       setRooms(
         snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -24,7 +26,7 @@ function SideBar() {
   return (
     <div className={styles.SideBar}>
       <div className={styles.header}>
-        <Avatar />
+        <Avatar src={user?.user.photoURL} />
         <div className={styles.headerRight}>
           <IconButton>
             <DonutLarge className={styles.headerRightIcon} />
@@ -41,14 +43,14 @@ function SideBar() {
       <div className={styles.search}>
         <div className={styles.searchContainer}>
           <SearchOutlined className={styles.searchIcon} />
-          <input type="text" placeholder="Search Conversations"  />
+          <input type="text" placeholder="Search Conversations" />
         </div>
       </div>
       <div className={styles.chats}>
         <SideBarChat addNewChat />
         {rooms.map((room) => (
-          <Link to ={`/rooms/${room.id}`} key={room.id}>
-          <SideBarChat data={room.data}/>
+          <Link to={`/rooms/${room.id}`} key={room.id}>
+            <SideBarChat data={room.data} />
           </Link>
         ))}
       </div>
