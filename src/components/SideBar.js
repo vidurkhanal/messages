@@ -26,7 +26,7 @@ function SideBar() {
   return (
     <div className={styles.SideBar}>
       <div className={styles.header}>
-        <Avatar src={user?.user.photoURL} />
+        <Avatar src={user?.photoURL} />
         <div className={styles.headerRight}>
           <IconButton>
             <DonutLarge className={styles.headerRightIcon} />
@@ -50,7 +50,7 @@ function SideBar() {
         <SideBarChat addNewChat />
         {rooms.map((room) => (
           <Link to={`/rooms/${room.id}`} key={room.id}>
-            <SideBarChat data={room.data} />
+            <SideBarChat data={room.data} id={room.id} />
           </Link>
         ))}
       </div>

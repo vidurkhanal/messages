@@ -12,35 +12,63 @@ import styles from "./chat.module.css";
 import cx from "classnames";
 import { useParams } from "react-router-dom";
 import db from "../firebase";
+import { useStateValue } from "../StateProvider";
+import firebase from "firebase";
 
 function Chat({ empty }) {
-
+  const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
-  const [seed, setSeed] = useState("");
-  const [roomName ,setRoomName] = useState("")
-  const {roomID} = useParams()
-  useEffect(()=>{
-    if (roomID){
-      db.collection("chatrooms").doc(roomID).onSnapshot(snapshot => 
-        setRoomName(snapshot.data().name)
-      )
+  const [roomName, setRoomName] = useState("");
+  const [{ user }, dispatch] = useStateValue();
+  const { roomID } = useParams();
+  useEffect(() => {
+    if (roomID) {
+      db.collection("chatrooms")
+        .doc(roomID)
+        .onSnapshot((snapshot) => setRoomName(snapshot.data().name));
+      db.collection("chatrooms")
+        .doc(roomID)
+        .collection("messages")
+        .orderBy("timestamp", "asc")
+        .onSnapshot((snapshot) =>
+          setMessages(snapshot.docs.map((doc) => doc.data()))
+        );
     }
-    setSeed(Math.floor(Math.random() * 5000));
+  }, [roomID]);
 
-  },[roomID])
-
-
-  if (empty)  {
-    return <h1>SELECT A CHAT TO CONTINUE</h1>;;
+  if (empty) {
+    return <h1>SELECT A CHAT TO CONTINUE</h1>;
   }
- 
+
+  const sendMsg = (e) => {
+    e.preventDefault();
+    if (message.length !== 0) {
+      db.collection("chatrooms").doc(roomID).collection("messages").add({
+        message,
+        name: user.displayName,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+      setMessage(" ");
+    }
+  };
+
   return (
     <div className={styles.chat}>
       <div className={styles.header}>
-        <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
+        <Avatar
+          src={` https://api.adorable.io/avatars/285/${roomName}
+        )}@adorable.io.png`}
+        />
         <div className={styles.headerMid}>
           <h3>{roomName}</h3>
-          <p>Last Seen At... </p>
+          {messages.length !== 0 && (
+            <p>
+              Last Active At{" "}
+              {new Date(
+                messages[messages.length - 1]?.timestamp?.toDate()
+              ).toUTCString()}{" "}
+            </p>
+          )}
         </div>
         <div className={styles.headerRight}>
           <IconButton>
@@ -55,21 +83,25 @@ function Chat({ empty }) {
         </div>
       </div>
       <div className={styles.body}>
-        <p className={cx(styles.message, true && styles._sender)}>
-          <span className={styles.sender}>Mark Zuckerberg</span>
-          Hello World
-          <span className={styles.time}>3:00AM</span>
-        </p>
+        {messages.map((msg) => (
+          <p
+            className={cx(
+              styles.message,
+              msg.name === user.displayName && styles._sender
+            )}
+          >
+            <span className={styles.sender}>{msg.name}</span>
+            {msg.message}
+            <span className={styles.time}>
+              {new Date(msg.timestamp?.toDate()).toUTCString()}
+            </span>
+          </p>
+        ))}
       </div>
       <div className={styles.footer}>
         <InsertEmoticon className={styles.footerIcon} />
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setMessage(" ");
-          }}
-        >
+        <form onSubmit={sendMsg}>
           <input
             type="text"
             placeholder="Send A Message"

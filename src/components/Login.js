@@ -19,7 +19,7 @@ const Login = () => {
       .then((authUser) =>
         dispatch({
           type: "SET_USER",
-          user: authUser,
+          user: authUser.user,
         })
       )
       .catch((error) => setError(error.message));
