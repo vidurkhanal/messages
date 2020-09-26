@@ -4,6 +4,13 @@
   flex-direction: column;
 }
 
+.emptyPlace {
+  background: url("../nothing.gif");
+  background-size: contain;
+  height: 100%;
+  width: 100%;
+}
+
 .header {
   padding: 20px;
   margin-top: 5px;

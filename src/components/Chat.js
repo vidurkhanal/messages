@@ -37,7 +37,7 @@ function Chat({ empty }) {
   }, [roomID]);
 
   if (empty) {
-    return <h1>SELECT A CHAT TO CONTINUE</h1>;
+    return <div className={styles.emptyPlace}></div>;
   }
 
   const sendMsg = (e) => {
